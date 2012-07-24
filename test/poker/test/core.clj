@@ -8,6 +8,7 @@
 (def three-of-a-kind-hand #{[:two :clubs] [:two :diamonds] [:two :hearts] [:ace :diamonds]})
 (def four-of-a-kind-hand #{[:two :clubs] [:two :diamonds] [:two :hearts] [:two :spades]})
 (def full-house-hand #{[:two :clubs] [:two :diamonds] [:king :hearts] [:king :spades] [:king :diamonds]})
+(def flush-hand #{[:two :clubs] [:three :clubs] [:four :clubs] [:five :clubs] [:seven :clubs]})
 
 ;;Helpers
 (defn good-bad-test [hand-test good-hand bad-hand]
@@ -20,9 +21,6 @@
 
 (deftest suit-test
 	(is (= :diamonds (suit [:ace :diamonds]))))
-
-(deftest freq-map-test
-	(is (= {:ace 1, :two 2} (freq-map pair-hand))))
 
 (deftest pair-test
 	(good-bad-test pair? pair-hand two-pair-hand))
@@ -38,3 +36,6 @@
 
 (deftest full-house-test
 	(good-bad-test full-house? full-house-hand two-pair-hand))
+
+(deftest flush-hand-test
+	(good-bad-test flush? flush-hand full-house-hand))
