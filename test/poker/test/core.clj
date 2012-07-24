@@ -2,20 +2,19 @@
   (:use [poker.core])
   (:use [clojure.test]))
 
+;;Test Data
 (def pair-hand #{[:ace :clubs] [:two :diamonds] [:two :hearts]})
 (def two-pair-hand #{[:ace :clubs] [:two :diamonds] [:two :hearts] [:ace :diamonds]})
+(def three-of-a-kind-hand #{[:two :clubs] [:two :diamonds] [:two :hearts] [:ace :diamonds]})
+(def four-of-a-kind-hand #{[:two :clubs] [:two :diamonds] [:two :hearts] [:two :spades]})
+(def full-house-hand #{[:two :clubs] [:two :diamonds] [:king :hearts] [:king :spades] [:king :diamonds]})
 
-(defn value [card] (first card))
-(defn suit [card] (last card))
-(defn freq-map [hand]
-	(frequencies (map value hand)))
+;;Helpers
+(defn good-bad-test [hand-test good-hand bad-hand]
+	(is (not (hand-test bad-hand)))
+	(is (hand-test good-hand)))
 
-(defn counts [size hand] 
-	(count (filter #(= size %) (vals (freq-map hand)))))
-
-(defn pairs [hand] 
-	(counts 2 hand))
-
+;;Tests
 (deftest value-test
 	(is (= :ace (value [:ace :diamonds]))))
 
@@ -26,5 +25,16 @@
 	(is (= {:ace 1, :two 2} (freq-map pair-hand))))
 
 (deftest pair-test
-	(is (= 1 (pairs pair-hand)))
-	(is (= 2 (pairs two-pair-hand))))
+	(good-bad-test pair? pair-hand two-pair-hand))
+
+(deftest two-pair-test
+	(good-bad-test two-pair? two-pair-hand pair-hand))
+
+(deftest three-of-a-kind-test
+	(good-bad-test three-of-a-kind? three-of-a-kind-hand two-pair-hand))
+
+(deftest four-of-a-kind-test
+	(good-bad-test four-of-a-kind? four-of-a-kind-hand two-pair-hand))
+
+(deftest full-house-test
+	(good-bad-test full-house? full-house-hand two-pair-hand))
