@@ -5,6 +5,7 @@
 
 (defn value [card] (first card))
 (defn suit [card] (last card))
+(defn rank [card] (get value-lookup (value card)))
 
 (defn freq-map [hand chooser]
 	(frequencies (map chooser hand)))
@@ -38,3 +39,9 @@
 
 (defn flush? [hand]
 	(= 1 (counts 5 suit hand)))
+
+(defn straight? [hand]
+	(= 4 (- (last (sort (map rank hand))) (first (sort (map rank hand))))))
+
+(defn royal-flush? [hand]
+	(and (straight? hand) (= 14 (last (sort (map rank hand))))))
