@@ -22,6 +22,10 @@
 (deftest suit-test
 	(is (= :diamonds (suit [:ace :diamonds]))))
 
+(deftest value-lookup-test
+	(is (= 2 (get value-lookup :two)))
+	(is (= 14 (get value-lookup :ace))))
+
 (deftest pair-test
 	(good-bad-test pair? pair-hand two-pair-hand))
 

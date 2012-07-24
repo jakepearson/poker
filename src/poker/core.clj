@@ -1,5 +1,8 @@
 (ns poker.core)
 
+(def values '(:two :three :four :five :six :seven :eight :nine :ten :jack :queen :king :ace))
+(def value-lookup (zipmap values (range 2 15)))
+
 (defn value [card] (first card))
 (defn suit [card] (last card))
 
